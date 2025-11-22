@@ -1,4 +1,3 @@
-# Your first line of Python code
 import random
 import math
 
