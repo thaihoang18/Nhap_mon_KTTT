@@ -1,9 +1,19 @@
 import random
 import math
 
-# Hàm mục tiêu
+# ==========================================
+# 1. HÀM MỤC TIÊU
+# ==========================================
 def objective_function(sol):
-    return sum(val * val for val in sol)
+    # Công thức: x_1.x_2 + x_3^2 + x_4^3
+    # Ánh xạ: x1->sol[0], x2->sol[1], x3->sol[2], x4->sol[3]
+    
+    x1 = sol[0]
+    x2 = sol[1]
+    x3 = sol[2]
+    x4 = sol[3]
+    
+    return (x1 * x2) + (x3 ** 2) + (x4 ** 3)
 
 # Hàm fitness
 def calculate_fitness(f_value):
@@ -13,8 +23,10 @@ def calculate_fitness(f_value):
         return 1.0 + abs(f_value)
 
 if __name__ == "__main__":
-    # Tham số thuật toán
-    D = 5
+    # ==========================================
+    # 2. SỐ CHIỀU
+    # ==========================================
+    D = 4               # Vì công thức có x1, x2, x3, x4
     SN = 20
     food_number = SN // 2
     limit = 30
@@ -28,7 +40,7 @@ if __name__ == "__main__":
     fit = [0.0] * food_number
     trial = [0] * food_number
 
-    # 1. KHỞI TẠO
+    # KHỞI TẠO
     random.seed()
     for i in range(food_number):
         row = [random.uniform(LB, UB) for _ in range(D)]
@@ -40,13 +52,13 @@ if __name__ == "__main__":
     best_solution = x[0][:]
     best_value = f[0]
 
-    # Cập nhật best lần đầu (Viết trực tiếp, không dùng hàm con)
+    # Cập nhật best lần đầu
     for i in range(food_number):
         if f[i] < best_value:
             best_value = f[i]
             best_solution = x[i][:]
 
-    # 2. VÒNG LẶP CHÍNH ABC
+    # VÒNG LẶP CHÍNH ABC
     for cycle in range(1, max_cycle + 1):
 
         # --- Employed Bees ---
@@ -116,8 +128,7 @@ if __name__ == "__main__":
                 fit[i] = calculate_fitness(f[i])
                 trial[i] = 0
 
-        # --- Cập nhật Best Solution (SỬA LỖI TẠI ĐÂY) ---
-        # Thay vì gọi hàm update_global_best(), ta viết vòng lặp trực tiếp
+        # --- Cập nhật Best Solution ---
         for i in range(food_number):
             if f[i] < best_value:
                 best_value = f[i]
@@ -125,7 +136,7 @@ if __name__ == "__main__":
 
     # IN KẾT QUẢ
     print(f"Best value found = {best_value}")
-    print("Best solution:", end=" ")
+    print("Best solution (x1, x2, x3, x4):", end=" ")
     for val in best_solution:
-        print(f"{val} ", end="")
+        print(f"{val:.5f} ", end="")
     print()
